@@ -2,6 +2,8 @@ import { createTheme, ThemeProvider } from '@mui/material'
 import React from 'react'
 import create from 'zustand'
 
+import Router from './Routes'
+
 const useStore = create(() => ({}))
 
 declare module '@mui/material/styles' {
@@ -29,7 +31,9 @@ export const App: React.FC = function App () {
 
   return (
     <>
-      <ThemeProvider theme={theme}></ThemeProvider>
+      <ThemeProvider theme={theme}>
+        <Router />
+      </ThemeProvider>
     </>
   )
 }
