@@ -1,15 +1,26 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material'
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Stack, TextField } from '@mui/material'
 import React from 'react'
 
-interface NewItemDialogProps {
+interface INewItemDialogProps {
   open: boolean
-
-  // 👇️ turn off type checking
-
   handleClose: () => any
 }
 
-const NewItemDialog = ({ open, handleClose }: NewItemDialogProps) => {
+const NewItemDialog = ({ open, handleClose }: INewItemDialogProps) => {
+  const [newTitle, setNewTitle] = React.useState<string>('')
+  const [newDesc, setNewDesc] = React.useState<string>('')
+
+  const writeLocalStorage = () => {
+    console.log(newTitle)
+    console.log(newDesc)
+    const newId = Date.now().toString(36) + Math.random().toString(36).substr(2)
+    const tmpObj: { id: string; title: string; desc: string } = { id: newId, title: newTitle, desc: newDesc }
+
+    // TODO: implement logic to write into data and update index
+    localStorage.setItem(newId, JSON.stringify(tmpObj))
+    const tmpIndex = JSON.parse(localStorage.getItem('index') || '{}')
+  }
+
   return (
     <>
       <Dialog
@@ -17,17 +28,34 @@ const NewItemDialog = ({ open, handleClose }: NewItemDialogProps) => {
         onClose={handleClose}
         aria-labelledby='alert-dialog-title'
         aria-describedby='alert-dialog-description'>
-        <DialogTitle id='alert-dialog-title'>{"Use Google's location service?"}</DialogTitle>
+        <DialogTitle id='alert-dialog-title'>{'Please enter the todo event'}</DialogTitle>
         <DialogContent>
-          <DialogContentText id='alert-dialog-description'>
-            Let Google help apps determine location. This means sending anonymous location data to Google, even when no
-            apps are running.
-          </DialogContentText>
+          <Stack spacing={2}>
+            <TextField
+              sx={{ width: 1 }}
+              id='outlined-basic'
+              label='Outlined'
+              variant='outlined'
+              onChange={(e) => {
+                setNewTitle(e.target.value)
+              }}
+            />
+            <TextField
+              sx={{ width: 1 }}
+              id='outlined-basic'
+              label='Outlined'
+              variant='outlined'
+              multiline
+              rows={4}
+              onChange={(e) => {
+                setNewDesc(e.target.value)
+              }}
+            />
+          </Stack>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Disagree</Button>
-          <Button onClick={handleClose} autoFocus>
-            Agree
+          <Button onClick={writeLocalStorage} autoFocus>
+            Add
           </Button>
         </DialogActions>
       </Dialog>

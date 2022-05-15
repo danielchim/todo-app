@@ -1,6 +1,7 @@
-import { Box, Button, List, ListItem, ListItemButton, ListItemText, Paper, Typography } from '@mui/material'
+import { Box, Button, Container, Grid, List, Pagination, Paper, Typography } from '@mui/material'
 import React from 'react'
 
+import Items from './../component/Items'
 import NewItemDialog from './../component/NewItemDialog'
 
 const HomePage = () => {
@@ -14,33 +15,32 @@ const HomePage = () => {
     setOpen(false)
   }
 
+  const totalSize = JSON.parse(localStorage.getItem('testObject') || '{}')
+
   return (
-    <Box display='flex' justifyContent='center' alignItems='center' minHeight='100vh' flexDirection={'column'}>
-      <Typography variant='h2' margin='2vh'>
-        Todo App
-      </Typography>
+    <Container maxWidth={'lg'}>
+      <Grid container spacing={2} justifyContent={'space-between'}>
+        <Typography variant='h2' margin='2vh'>
+          Todo App
+        </Typography>
+        <Button onClick={handleClickOpen}>Add new item!</Button>
+      </Grid>
+
       <Paper>
         <Box padding='2vh'>
-          <nav aria-label='main mailbox folders'>
+          <nav aria-label='main todolist'>
             <List>
-              <ListItem disablePadding>
-                <ListItemButton>
-                  <ListItemText primary='Inbox' />
-                </ListItemButton>
-              </ListItem>
-              <ListItem disablePadding>
-                <ListItemButton>
-                  <ListItemText primary='Drafts' />
-                </ListItemButton>
-              </ListItem>
+              <Items />
             </List>
           </nav>
-          <Button onClick={handleClickOpen}>Add new item!</Button>
+          {totalSize.length / 10 > 1 ? <Pagination count={totalSize.length / 10 + 1} /> : <></>}
+          <Box>
+            <Button onClick={handleClickOpen}>Add new item!</Button>
+          </Box>
         </Box>
-
         <NewItemDialog open={open} handleClose={handleClose}></NewItemDialog>
       </Paper>
-    </Box>
+    </Container>
   )
 }
 
