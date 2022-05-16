@@ -11,7 +11,7 @@ const EditItem = ({ id, title, desc }: IEditItemProps) => {
   const [newTitle, setNewTitle] = React.useState<string>(title)
   const [newDesc, setNewDesc] = React.useState<string>(desc)
   const updateLocalStorage = () => {
-    // update item into local storage, only update the item
+    // update item into local storage
     const tmpObj: { id: string; title: string; desc: string } = { id, title: newTitle, desc: newDesc }
     localStorage.setItem(id, JSON.stringify(tmpObj))
   }
