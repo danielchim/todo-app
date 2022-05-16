@@ -11,14 +11,18 @@ const NewItemDialog = ({ open, handleClose }: INewItemDialogProps) => {
   const [newDesc, setNewDesc] = React.useState<string>('')
 
   const writeLocalStorage = () => {
-    console.log(newTitle)
-    console.log(newDesc)
+    // write new item into local storage, if exists, only update the item, else write to localstorage and update index
     const newId = Date.now().toString(36) + Math.random().toString(36).substr(2)
     const tmpObj: { id: string; title: string; desc: string } = { id: newId, title: newTitle, desc: newDesc }
-
-    // TODO: implement logic to write into data and update index
-    localStorage.setItem(newId, JSON.stringify(tmpObj))
-    const tmpIndex = JSON.parse(localStorage.getItem('index') || '{}')
+    if (localStorage.getItem(newId) === null) {
+      localStorage.setItem(newId, JSON.stringify(tmpObj))
+      const tmpArrId = JSON.parse(localStorage.getItem('index') || '[]')
+      tmpArrId.push(newId)
+      localStorage.setItem('index', JSON.stringify(tmpArrId))
+    } else {
+      localStorage.setItem(newId, JSON.stringify(tmpObj))
+    }
+    handleClose()
   }
 
   return (

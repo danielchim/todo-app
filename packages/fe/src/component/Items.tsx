@@ -12,9 +12,6 @@ const getLocalStorageItems = (id: string) => {
   return JSON.parse(retrievedObject || '{}')
 }
 
-interface Index {
-  id: string
-}
 interface IData {
   id: string
   title: string
@@ -22,20 +19,19 @@ interface IData {
 }
 
 const Items = () => {
-  const [index, setIndex] = React.useState<Index[] | null>(null)
+  const [index, setIndex] = React.useState<string[] | null>(null)
   const [data, setData] = React.useState<IData[] | null>(null)
 
   React.useEffect(() => {
-    setIndex(JSON.parse(getLocalStorageIndex() || '{}'))
+    setIndex(JSON.parse(getLocalStorageIndex() || '[]'))
   }, [])
 
   // TODO: implement map logic with index arrays
   React.useEffect(() => {
     const resultArr: IData[] = []
-    index?.forEach((singleIndex: Index) => {
-      resultArr.push(getLocalStorageItems(singleIndex.id))
+    index?.forEach((singleIndex: string) => {
+      resultArr.push(getLocalStorageItems(singleIndex))
     })
-    console.log(resultArr)
     setData(resultArr)
   }, [index])
   return (
